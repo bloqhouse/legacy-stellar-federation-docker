@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM debian:sid-slim
 
 LABEL author phra
 
@@ -16,6 +16,8 @@ ENV SIGNING_SEED ${SIGNING_SEED}
 ENV ENCRYPTION_KEY ${ENCRYPTION_KEY}
 
 WORKDIR /
+
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget -y
 
 RUN wget -O compliance.tar.gz https://github.com/stellar/bridge-server/releases/download/v${COMPLIANCE_VERSION}/compliance-v${COMPLIANCE_VERSION}-linux-amd64.tar.gz
 

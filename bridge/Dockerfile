@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM debian:sid-slim
 
 LABEL author phra
 
@@ -18,6 +18,8 @@ ENV BASE_SEED ${BASE_SEED}
 ENV RECEIVING_ACCOUNT ${RECEIVING_ACCOUNT}
 
 WORKDIR /
+
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget -y
 
 RUN wget -O bridge.tar.gz https://github.com/stellar/bridge-server/releases/download/v${BRIDGE_VERSION}/bridge-v${BRIDGE_VERSION}-linux-amd64.tar.gz
 

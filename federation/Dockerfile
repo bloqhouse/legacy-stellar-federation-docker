@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM debian:sid-slim
 
 LABEL author phra
 
@@ -10,6 +10,8 @@ ENV DB_URI ${DB_URI}
 ENV HTTP_PORT ${HTTP_PORT}
 ENV DOMAIN ${DOMAIN}
 ENV ISSUER ${ISSUER}
+
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget -y
 
 WORKDIR /
 
