@@ -1,0 +1,14 @@
+
+FEDERATION_SERVER = "https://stockify.io/federation"
+AUTH_SERVER = "https://stockify.io/compliance"
+SIGNING_KEY = "GDNVJKQ6CPOK54WN2CLJ5TDW2CGWLZAUOMJYGAZNUVGZD3MQL36OXRBH"
+
+
+[[CURRENCIES]]
+code = "BLT"
+conditions = "There will only be 1000 BLT created"
+desc = "Economic ownership in a real estate fund"
+display_decimals = 0
+image = "https://stockify.io/bloq.png"
+issuer = "GDV2IM37YTASEAX4NVD3ANJVO6ZG2YYDAJHLPZTMPIN66HH3H4NURTC4"
+name = "BLT"
