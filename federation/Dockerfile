@@ -4,6 +4,13 @@ LABEL author phra
 
 ARG FEDERATION_VERSION
 
+ENV FEDERATION_VERSION ${FEDERATION_VERSION}
+ENV DB_TYPE ${DB_TYPE}
+ENV DB_URI ${DB_URI}
+ENV HTTP_PORT ${HTTP_PORT}
+ENV DOMAIN ${DOMAIN}
+ENV ISSUER ${ISSUER}
+
 WORKDIR /
 
 RUN wget -O federation.tar.gz https://github.com/stellar/go/releases/download/federation-v${FEDERATION_VERSION}/federation-v${FEDERATION_VERSION}-linux-amd64.tar.gz
