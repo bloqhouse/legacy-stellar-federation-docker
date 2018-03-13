@@ -64,7 +64,7 @@ cat /opt/stellar.toml | \
   sed -e "s~\\\$DESC~${DESC}~" | \
   sed -e "s~\\\$DECIMALS~${DECIMALS}~" | \
   sed -e "s~\\\$IMAGE_URL~${IMAGE_URL}~" | \
-  sed -e "s~\\\$ISSUER~${ISSUER}~" | \
+  sed -e "s~\\\$ISSUER~${ISSUER}~" \
   > /usr/share/nginx/html/.well-known/stellar.toml
 
 service nginx stop

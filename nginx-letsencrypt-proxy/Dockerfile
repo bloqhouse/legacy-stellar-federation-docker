@@ -33,10 +33,10 @@ RUN mkdir -p /etc/nginx/sites-enabled
 
 WORKDIR /opt
 
-COPY ./le.sh /opt
-RUN chmod +x /opt/le.sh
 COPY stellar.toml /opt
 COPY ./site.conf /opt/site.conf
+COPY ./le.sh /opt
+RUN chmod +x /opt/le.sh
 
 EXPOSE 80
 EXPOSE 443
