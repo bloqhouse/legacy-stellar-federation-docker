@@ -11,11 +11,6 @@ if [[ -z "${NGINX_SERVER_NAME}" ]]; then
   exit 1
 fi
 
-# if [[ -z "${NGINX_SERVER_NAME_LEDGER2}" ]]; then
-#   echo 'NGINX_SERVER_NAME_LEDGER2 is not specified. Aborting.'
-#   exit 1
-# fi
-
 echo 'Starting initial nginx config.'
 service nginx start
 
@@ -56,6 +51,8 @@ cat /opt/site.conf | \
   sed -e "s~\\\$COMPLIANCE_EXTERNAL_PORT~${COMPLIANCE_EXTERNAL_PORT}~" \
   > /etc/nginx/conf.d/${NGINX_SERVER_NAME}.conf
 
+
+echo "Copying stellar.toml file"
 mkdir -p /usr/share/nginx/html/.well-known
 
 cat /opt/stellar.toml | \

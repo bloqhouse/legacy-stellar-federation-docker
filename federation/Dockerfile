@@ -11,7 +11,7 @@ ENV FEDERATION_PORT ${FEDERATION_PORT}
 ENV DOMAIN ${DOMAIN}
 ENV ISSUER ${ISSUER}
 
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget -y
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget postgresql-client -y
 
 WORKDIR /
 
@@ -25,4 +25,6 @@ RUN chmod u+x federation
 
 COPY federation.cfg.sh .
 
-CMD sh federation.cfg.sh > federation.cfg && ./federation
+COPY migrate_db.sh .
+
+CMD sh federation.cfg.sh > federation.cfg && sh migrate_db.sh && ./federation
