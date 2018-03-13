@@ -56,6 +56,8 @@ cat /opt/site.conf | \
   sed -e "s~\\\$COMPLIANCE_EXTERNAL_PORT~${COMPLIANCE_EXTERNAL_PORT}~" \
   > /etc/nginx/conf.d/${NGINX_SERVER_NAME}.conf
 
+mkdir -p /usr/share/nginx/html/.well-known
+
 cat /opt/stellar.toml | \
   sed -e "s~\\\$FEDERATION_URL~${FEDERATION_URL}~" | \
   sed -e "s~\\\$COMPLIANCE_URL~${COMPLIANCE_URL}~" | \
@@ -66,7 +68,7 @@ cat /opt/stellar.toml | \
   sed -e "s~\\\$DECIMALS~${DECIMALS}~" | \
   sed -e "s~\\\$IMAGE_URL~${IMAGE_URL}~" | \
   sed -e "s~\\\$ISSUER~${ISSUER}~" | \
-  > /usr/share/nginx/html/stellar.toml
+  > /usr/share/nginx/html/.well-known/stellar.toml
 
 service nginx stop
 echo "Restarting nginx"
