@@ -29,4 +29,4 @@ app.post('/receive', function (request, response) {
   response.status(200).end()
 })
 
-app.listen(8005, () => console.log('Bridge server callbacks running on port 8005!'))
+app.listen(process.env.LEDGER_PORT, () => console.log('Bridge server callbacks running on port 8005!'))

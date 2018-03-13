@@ -12,7 +12,9 @@ ENV LEDGER_PORT ${LEDGER_PORT}
 
 RUN echo "deb http://ftp.debian.org/debian jessie-backports main" \
   >> /etc/apt/sources.list; \
-  apt-get update && apt-get install -y certbot -t jessie-backports
+  apt-get update && \
+  apt-get dist-upgrade -y &&\
+  apt-get install -y certbot -t jessie-backports
 
 RUN update-ca-certificates
 
@@ -24,7 +26,7 @@ WORKDIR /opt
 
 COPY ./le.sh /opt
 RUN chmod +x /opt/le.sh
-COPY ./stellar.toml /usr/share/nginx/html
+COPY stellar.toml /opt
 COPY ./site.conf /opt/site.conf
 
 EXPOSE 80
