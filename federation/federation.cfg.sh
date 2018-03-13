@@ -1,4 +1,4 @@
-echo port = ${HTTP_PORT}
+echo port = ${FEDERATION_PORT}
 echo 
 echo [database]
 echo type = "\"${DB_TYPE}\""

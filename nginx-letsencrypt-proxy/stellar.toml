@@ -9,4 +9,4 @@ desc = "$DESC"
 display_decimals = $DECIMALS
 image = "$IMAGE_URL"
 issuer = "$ISSUER"
-name = "$CURRENCY"
+name = "$CURRENCY_CODE"

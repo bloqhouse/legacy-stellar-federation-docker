@@ -49,49 +49,25 @@ fi
 
 echo "Applying SSL enabled nginx config"
 cat /opt/site.conf | \
-  sed -e "s/\\\$NGINX_SERVER_NAME/${NGINX_SERVER_NAME}/" | \
-  sed -e "s/\\\$BRIDGE_PORT/${BRIDGE_PORT}/" | \
-  sed -e "s/\\\$FEDERATION_PORT/${FEDERATION_PORT}/" | \
-  sed -e "s/\\\$LEDGER_PORT/${LEDGER_PORT}/" | \
-  sed -e "s/\\\$COMPLIANCE_EXTERNAL_PORT/${COMPLIANCE_EXTERNAL_PORT}/" | \
+  sed -e "s~\\\$NGINX_SERVER_NAME~${NGINX_SERVER_NAME}~" | \
+  sed -e "s~\\\$BRIDGE_PORT~${BRIDGE_PORT}~" | \
+  sed -e "s~\\\$FEDERATION_PORT~${FEDERATION_PORT}~" | \
+  sed -e "s~\\\$LEDGER_PORT~${LEDGER_PORT}~" | \
+  sed -e "s~\\\$COMPLIANCE_EXTERNAL_PORT~${COMPLIANCE_EXTERNAL_PORT}~" \
   > /etc/nginx/conf.d/${NGINX_SERVER_NAME}.conf
 
 cat /opt/stellar.toml | \
-  sed -e "s/\\\$FEDERATION_URL/${FEDERATION_URL}/" | \
-  sed -e "s/\\\$COMPLIANCE_URL/${COMPLIANCE_URL}/" | \
-  sed -e "s/\\\$RECEIVING_ACCOUNT/${RECEIVING_ACCOUNT}/" | \
-  sed -e "s/\\\$CURRENCY_CODE/${CURRENCY_CODE}/" | \
-  sed -e "s/\\\$CONDITIONS/${CONDITIONS}/" | \
-  sed -e "s/\\\$DESC/${DESC}/" | \
-  sed -e "s/\\\$DECIMALS/${DECIMALS}/" | \
-  sed -e "s/\\\$IMAGE_URL/${IMAGE_URL}/" | \
-  sed -e "s/\\\$ISSUER/${ISSUER}/" | \
-  sed -e "s/\\\$CURRENCY/${CURRENCY}/" | \
+  sed -e "s~\\\$FEDERATION_URL~${FEDERATION_URL}~" | \
+  sed -e "s~\\\$COMPLIANCE_URL~${COMPLIANCE_URL}~" | \
+  sed -e "s~\\\$RECEIVING_ACCOUNT~${RECEIVING_ACCOUNT}~" | \
+  sed -e "s~\\\$CURRENCY_CODE~${CURRENCY_CODE}~" | \
+  sed -e "s~\\\$CONDITIONS~${CONDITIONS}~" | \
+  sed -e "s~\\\$DESC~${DESC}~" | \
+  sed -e "s~\\\$DECIMALS~${DECIMALS}~" | \
+  sed -e "s~\\\$IMAGE_URL~${IMAGE_URL}~" | \
+  sed -e "s~\\\$ISSUER~${ISSUER}~" | \
   > /usr/share/nginx/html/stellar.toml
 
-# echo "Testing whether letsencrypt has been initialized already."
-# if [[ ! -d "/etc/letsencrypt/live/${NGINX_SERVER_NAME_LEDGER2}" ]]; then
-
-#   echo "Initializing letsencrypt with certbot for '${NGINX_SERVER_NAME_LEDGER2}'."
-#   letsencrypt certonly \
-#     -a webroot \
-#     -m ${NGINX_EMAIL} \
-#     -d ${NGINX_SERVER_NAME_LEDGER2} \
-#     --agree-tos \
-#     --webroot-path=/usr/share/nginx/html/
-
-# else
-#   echo "Letsencrypt has been initialized; skipping certbot setup."
-# fi
-
-# echo "Applying SSL enabled nginx config"
-# mkdir -p /etc/nginx/sites-{available,enabled}
-# cat /opt/site.conf | \
-#   sed -e "s/\\\$SERVER_NAME/${NGINX_SERVER_NAME_LEDGER2}/" | \
-#   sed -e "s/\\\$REVERSE_HOST/${NGINX_SERVER_NAME_LEDGER2%%.*}/" \
-#   > /etc/nginx/conf.d/${NGINX_SERVER_NAME_LEDGER2}.conf
-
 service nginx stop
-
 echo "Restarting nginx"
 exec nginx -g 'daemon off;'

@@ -1,4 +1,4 @@
-echo port = ${HTTP_PORT}
+echo port = ${BRIDGE_PORT}
 echo compliance = "\"${COMPLIANCE_URL}\""
 echo horizon = "\"${HORIZON}\""
 echo network_passphrase = "\"${PASSPHRASE}\""
@@ -7,7 +7,7 @@ echo
 echo # This describes the assets that can be sent and received.
 echo # Repeat this section to add support for more asset types.
 echo [[assets]]
-echo code="\"${ASSET_CODE}\""
+echo code="\"${CURRENCY_CODE}\""
 echo issuer="\"${ISSUER}\""
 echo 
 echo [database]
