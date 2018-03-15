@@ -9,7 +9,7 @@ ENV DB_TYPE ${DB_TYPE}
 ENV DB_URI ${DB_URI}
 ENV FEDERATION_PORT ${FEDERATION_PORT}
 ENV DOMAIN ${DOMAIN}
-ENV ISSUER ${ISSUER}
+ENV RECEIVING_ACCOUNT ${RECEIVING_ACCOUNT}
 
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget postgresql-client -y
 
