@@ -48,7 +48,8 @@ cat /opt/site.conf | \
   sed -e "s~\\\$BRIDGE_PORT~${BRIDGE_PORT}~" | \
   sed -e "s~\\\$FEDERATION_PORT~${FEDERATION_PORT}~" | \
   sed -e "s~\\\$LEDGER_PORT~${LEDGER_PORT}~" | \
-  sed -e "s~\\\$COMPLIANCE_EXTERNAL_PORT~${COMPLIANCE_EXTERNAL_PORT}~" \
+  sed -e "s~\\\$COMPLIANCE_EXTERNAL_PORT~${COMPLIANCE_EXTERNAL_PORT}~" | \
+  sed -e "s~\\\$COMPLIANCE_NODE_PORT~${COMPLIANCE_NODE_PORT}~" \
   > /etc/nginx/conf.d/${NGINX_SERVER_NAME}.conf
 
 
