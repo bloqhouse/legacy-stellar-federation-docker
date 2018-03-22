@@ -4,12 +4,20 @@
 
 We have created this repository to be able to quickly deploy dummy stellar federations for demo and testing purposes. We decided to open source it to contribute to the Stellar community.
 
+## Feature
+
+- Federation
+- Compliance
+- Ledger
+- nginx reverse proxy w/ automatic HTTPS certificate generation
+
 ## Prerequisites
 
 You must ensure to have installed the following dependencies:
 
 - Docker CE (https://www.docker.com/community-edition)
 - Docker-compose (https://docs.docker.com/compose/)
+- DNS entry pointing to the correct host (required for HTTPS certificate generation via [LetsEncrypt](https://letsencrypt.org/))
 
 ## Installation
 
