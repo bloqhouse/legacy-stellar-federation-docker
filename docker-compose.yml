@@ -1,0 +1,165 @@
+version: "3.6"
+
+x-env:
+  &env
+  NGINX_SERVER_NAME: "$NGINX_SERVER_NAME"
+  NGINX_EMAIL: "$NGINX_EMAIL"
+  BRIDGE_VERSION: "$BRIDGE_VERSION"
+  FEDERATION_VERSION: "$FEDERATION_VERSION"
+  COMPLIANCE_VERSION: "$COMPLIANCE_VERSION"
+  BRIDGE_PORT: "$BRIDGE_PORT"
+  FEDERATION_PORT: "$FEDERATION_PORT"
+  COMPLIANCE_EXTERNAL_PORT: "$COMPLIANCE_EXTERNAL_PORT"
+  COMPLIANCE_INTERNAL_PORT: "$COMPLIANCE_INTERNAL_PORT"
+  COMPLIANCE_NODE_PORT: "$COMPLIANCE_NODE_PORT"
+  LEDGER_PORT: "$LEDGER_PORT"
+  HORIZON: "$HORIZON"
+  PASSPHRASE: "$PASSPHRASE"
+  FEDERATION_URL: "$FEDERATION_URL"
+  COMPLIANCE_URL: "$COMPLIANCE_URL"
+  RECEIVE_URL: "$RECEIVE_URL"
+  ISSUER: "$ISSUER"
+  RECEIVING_ACCOUNT: "$RECEIVING_ACCOUNT"
+  BASE_SEED: "$BASE_SEED"
+  SIGNING_SEED: "$SIGNING_SEED"
+  ENCRYPTION_KEY: "$ENCRYPTION_KEY"
+  SANCTIONS_URL: "$SANCTIONS_URL"
+  ASK_USER_URL: "$ASK_USER_URL"
+  FETCH_INFO_URL: "$FETCH_INFO_URL"
+  IMAGE_URL: "$IMAGE_URL"
+  CURRENCY_CODE: "$CURRENCY_CODE"
+  CONDITIONS: "$CONDITIONS"
+  DESC: "$DESC"
+  DECIMALS: "$DECIMALS"
+  CREATE_ACCOUNTS_TABLE: "$CREATE_ACCOUNTS_TABLE"
+  POPULATE_ACCOUNTS_TABLE: "$POPULATE_ACCOUNTS_TABLE"
+  STAGING: "$STAGING"
+
+networks:
+  federation:
+
+services:
+  letsencrypt:
+    depends_on:
+      - bridge
+      - federation
+      - compliance
+      - ledger
+    container_name: letsencrypt
+    build:
+      context: nginx-letsencrypt-proxy
+      args:
+        <<: *env
+    volumes:
+      - ./data/letsencrypt/etc:/etc/letsencrypt
+      - ./data/letsencrypt/var:/var/lib/letsencrypt
+      - ./data/letsencrypt/certs:/opt/certs
+    networks:
+      - federation
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      <<: *env
+
+  postgres_bridge:
+    container_name: postgres_bridge
+    image: postgres:alpine
+    volumes:
+      - ./data/postgres_bridge-data:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: stellar_bridge
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${SECRET}
+    networks:
+      - federation
+
+  bridge:
+    depends_on:
+      - postgres_bridge
+    container_name: bridge
+    #image: ""
+    build:
+      context: bridge
+      args:
+        <<: *env
+    networks:
+      - federation
+    environment:
+      <<: *env
+      DB_TYPE: postgres
+      DB_URI: postgres://admin:${SECRET}@postgres_bridge/stellar_bridge?sslmode=disable
+
+  postgres_federation:
+    container_name: postgres_federation
+    image: postgres:alpine
+    volumes:
+      - ./data/postgres_federation-data:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: internal_accounts
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${SECRET}
+    networks:
+      - federation
+
+  federation:
+    depends_on:
+      - postgres_federation
+    container_name: federation
+    #image: ""
+    build:
+      context: federation
+      args:
+        <<: *env
+    networks:
+      - federation
+    environment:
+      <<: *env
+      DB_TYPE: postgres
+      DB_URI: postgres://admin:${SECRET}@postgres_federation/internal_accounts?sslmode=disable
+
+  postgres_compliance:
+    container_name: postgres_compliance
+    image: "postgres:alpine"
+    volumes:
+      - ./data/postgres_compliance-data:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: stellar_compliance
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${SECRET}
+    networks:
+      - federation
+
+  compliance:
+    depends_on:
+      - postgres_compliance
+    container_name: compliance
+    #image: ""
+    build:
+      context: compliance
+      args:
+        <<: *env
+    networks:
+      - federation
+    environment:
+      <<: *env
+      DB_TYPE: postgres
+      DB_URI: postgres://admin:${SECRET}@postgres_compliance/stellar_compliance?sslmode=disable
+
+  ledger:
+    depends_on:
+      - compliance
+      - federation
+      - bridge
+    container_name: ledger
+    #image: ""
+    build:
+      context: ledger
+    networks:
+      - federation
+    environment:
+      <<: *env
+
