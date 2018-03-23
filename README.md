@@ -35,10 +35,15 @@ git clone git@github.com:bloqhouse/stellar-docker.git
 
 ## Configuration
 
-This repository requires you to create a `.env` file in the root in order to pass all the required environment variables:
+This repository requires you to create a `.env` file in the project root directory in order to pass all the required environment variables:
 
 ```
 # .env
+
+# LETSENCRYPT STAGING ENV
+# CHANGE IT TO true FOR DEVELOPMENT
+LETSENCRYPT_STAGING=false
+
 # PUBLIC
 NGINX_SERVER_NAME=domain.com
 NGINX_EMAIL=user@domain.com
