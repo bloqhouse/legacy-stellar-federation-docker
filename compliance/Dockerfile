@@ -19,7 +19,7 @@ ENV COMPLIANCE_NODE_PORT ${COMPLIANCE_NODE_PORT}
 
 WORKDIR /
 
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget -y
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget netcat-openbsd -y
 
 RUN wget -O compliance.tar.gz https://github.com/stellar/bridge-server/releases/download/v${COMPLIANCE_VERSION}/compliance-v${COMPLIANCE_VERSION}-linux-amd64.tar.gz
 
@@ -31,4 +31,4 @@ RUN chmod u+x compliance
 
 COPY compliance.cfg.sh .
 
-CMD sh compliance.cfg.sh > compliance.cfg && ./compliance --migrate-db && ./compliance
+CMD until nc -z postgres_compliance 5432; do sleep 1; done && sh compliance.cfg.sh > compliance.cfg && ./compliance --migrate-db && ./compliance

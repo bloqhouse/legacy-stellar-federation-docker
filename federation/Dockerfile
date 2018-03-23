@@ -13,7 +13,7 @@ ENV RECEIVING_ACCOUNT ${RECEIVING_ACCOUNT}
 ENV CREATE_ACCOUNTS_TABLE ${CREATE_ACCOUNTS_TABLE}
 ENv POPULATE_ACCOUNTS_TABLE $POPULATE_ACCOUNTS_TABLE
 
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget postgresql-client -y
+RUN apt-get update && apt-get dist-upgrade -y && apt-get install wget postgresql-client netcat-openbsd -y
 
 WORKDIR /
 
@@ -29,4 +29,4 @@ COPY federation.cfg.sh .
 
 COPY migrate_db.sh .
 
-CMD sh federation.cfg.sh > federation.cfg && sh migrate_db.sh && ./federation
+CMD until nc -z postgres_federation 5432; do sleep 1; done && sh federation.cfg.sh > federation.cfg && sh migrate_db.sh && ./federation

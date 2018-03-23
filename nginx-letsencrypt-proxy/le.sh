@@ -32,6 +32,7 @@ if [[ ! -d "/etc/letsencrypt/live/${NGINX_SERVER_NAME}" ]]; then
 
   echo "Initializing letsencrypt with certbot for '${NGINX_SERVER_NAME}'."
   letsencrypt certonly \
+    --staging \
     -a webroot \
     -m ${NGINX_EMAIL} \
     -d ${NGINX_SERVER_NAME} \
